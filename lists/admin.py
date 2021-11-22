@@ -1,3 +1,11 @@
 from django.contrib import admin
+from . import models
 
-# Register your models here.
+
+@admin.register(models.List)
+class ListAdming(admin.ModelAdmin):
+
+    """List Admin Definition"""
+
+    raw_id_fields = ("user",)
+    filter_horizontal = ("rooms",)

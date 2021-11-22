@@ -1,3 +1,13 @@
 from django.contrib import admin
+from . import models
 
-# Register your models here.
+
+@admin.register(models.Reservation)
+class ReservatoinAdmin(admin.ModelAdmin):
+
+    """Reservation Admin Definition"""
+
+    raw_id_fields = (
+        "guest",
+        "room",
+    )
