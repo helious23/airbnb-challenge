@@ -26,7 +26,10 @@ class User(AbstractUser):
     CURRENCY_KRW = "krw"
     CURRENCY_CHOICES = ((CURRENCY_USD, "$ USD"), (CURRENCY_KRW, "₩ 원"))
 
-    avatar = models.ImageField(blank=True)
+    def user_directory_path(self, filename):
+        return "user_{0}/avatar/{1}".format(self.id, filename)
+
+    avatar = models.ImageField(upload_to=user_directory_path, blank=True)
     gender = models.CharField(choices=GENDER_CHOICES, max_length=40, blank=True)
     bio = models.TextField(default="", blank=True)
     birthdate = models.DateField(null=True, blank=True)

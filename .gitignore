@@ -140,3 +140,4 @@ cython_debug/
 # max
 
 .DS_Store
+uploads/

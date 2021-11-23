@@ -54,8 +54,13 @@ class Photo(core_models.TimeStampedModel):
 
     """Photo Model Definition"""
 
+    def user_directory_path(self, filename):
+        return "user_{0}/room_photos/room_{1}/{2}".format(
+            self.room.host.id, self.room.id, filename
+        )
+
     caption = models.CharField(max_length=120)
-    file = models.ImageField()
+    file = models.ImageField(upload_to=user_directory_path)
     room = models.ForeignKey("Room", related_name="photos", on_delete=models.CASCADE)
 
     def __str__(self):
@@ -111,5 +116,103 @@ class Room(core_models.TimeStampedModel):
     facilities = models.ManyToManyField("Facility", related_name="rooms", blank=True)
     house_rules = models.ManyToManyField("HouseRule", related_name="rooms", blank=True)
 
+    def save(self, *args, **kwargs):
+        self.city = self.city.title()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return self.name
+
+    def total_acurrancy(self):
+        all_reviews = self.reviews.all()
+        all_ratings = 0
+        for review in all_reviews:
+            all_ratings += review.acurrancy
+        try:
+            return round(all_ratings / len(all_reviews), 1)
+        except ZeroDivisionError:
+            return 0
+
+    def acurrancy_percent(self):
+        acurrancy = self.total_acurrancy()
+        return acurrancy / 5 * 100
+
+    def total_communication(self):
+        all_reviews = self.reviews.all()
+        all_ratings = 0
+        for review in all_reviews:
+            all_ratings += review.communication
+        try:
+            return round(all_ratings / len(all_reviews), 1)
+        except ZeroDivisionError:
+            return 0
+
+    def communication_percent(self):
+        communication = self.total_communication()
+        return communication / 5 * 100
+
+    def total_cleanliness(self):
+        all_reviews = self.reviews.all()
+        all_ratings = 0
+        for review in all_reviews:
+            all_ratings += review.cleanliness
+        try:
+            return round(all_ratings / len(all_reviews), 1)
+        except ZeroDivisionError:
+            return 0
+
+    def cleanliness_percent(self):
+        cleanliness = self.total_cleanliness()
+        return cleanliness / 5 * 100
+
+    def total_location(self):
+        all_reviews = self.reviews.all()
+        all_ratings = 0
+        for review in all_reviews:
+            all_ratings += review.location
+        try:
+            return round(all_ratings / len(all_reviews), 1)
+        except ZeroDivisionError:
+            return 0
+
+    def location_percent(self):
+        location = self.total_location()
+        return location / 5 * 100
+
+    def total_check_in(self):
+        all_reviews = self.reviews.all()
+        all_ratings = 0
+        for review in all_reviews:
+            all_ratings += review.check_in
+        try:
+            return round(all_ratings / len(all_reviews), 1)
+        except ZeroDivisionError:
+            return 0
+
+    def check_in_percent(self):
+        check_in = self.total_check_in()
+        return check_in / 5 * 100
+
+    def total_value(self):
+        all_reviews = self.reviews.all()
+        all_ratings = 0
+        for review in all_reviews:
+            all_ratings += review.value
+        try:
+            return round(all_ratings / len(all_reviews), 1)
+        except ZeroDivisionError:
+            return 0
+
+    def value_percent(self):
+        value = self.total_value()
+        return value / 5 * 100
+
+    def total_rating(self):
+        all_reviews = self.reviews.all()
+        all_ratings = 0
+        for review in all_reviews:
+            all_ratings += review.rating_average()
+        try:
+            return round(all_ratings / len(all_reviews), 2)
+        except ZeroDivisionError:
+            return 0
