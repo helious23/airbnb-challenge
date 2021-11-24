@@ -1,0 +1,234 @@
+{% extends 'base.html' %} 
+
+
+{% block page_title %}
+    {{room.name}} 
+{% endblock page_title %} 
+
+{% block content %} 
+    <div class="container max-w-6xl h-full mx-auto mb-20 mt-28">
+        <div class="flex items-center justify-between">
+            <div class="text-2xl font-medium">{{room.name}}</div>
+            <div class="w-12">
+                {% comment %} {% on_favs room as on_favs_boolean %}
+                {% if on_favs_boolean %}
+                <a href="{% url 'lists:toggle-room' room.pk %}?action=remove" class="text-2xl text-red-400"><i class="fas fa-heart"></i></a>    
+                {% else %}
+                <a href="{% url 'lists:toggle-room' room.pk %}?action=add" class="text-2xl text-red-400"><i class="far fa-heart"></i></a>    
+                {% endif %} {% endcomment %}
+            </div>
+        </div>
+        <div class="flex items-center mt-2 text-sm text-gray-500">
+            <div class="flex items-center mr-2">
+                <i class="fas fa-star text-red-500 text-xs mr-1"></i> 
+                <div class="font-medium text-black mr-1 ">{{room.total_rating}}</div>
+                <div class="font-medium underline">({{room.reviews.count}} review{{room.reviews.count|pluralize}})</div>
+            </div>
+            {% if room.host.superhost %}
+            <div class="flex items-center mr-2">
+                <div class="mr-2">·</div>
+                <i class="fas fa-medal text-red-500 mr-1"></i>
+                <div>SuperHost</div>
+            </div>
+            {% endif %}
+            <div class="flex items-center">
+                <div class="mr-2">·</div>
+                <div class="mr-1 underline font-medium">{{room.city}},</div>
+                <div class="underline font-medium">{{room.country.name}}</div>
+            </div>
+        </div>
+        <div class="flex mt-5 h-50vh">
+            <div class="h-full w-1/2 bg-cover bg-center rounded-l-xl mr-2 cursor-pointer filter hover:brightness-90 transition-all duration-300" style="background-image :url({{room.first_photo}}) "></div>
+            <div class="h-full w-1/2 grid grid-cols-2 gap-2">
+                {% for photo in room.get_next_four_photos %}
+                    <div style="background-image : url({{photo.file.url}})" class="w-full h-full bg-cover bg-center {% if forloop.counter == 2 %} rounded-tr-lg {% endif %} {% if forloop.counter == 4 %} rounded-br-lg {% endif %} filter hover:brightness-90 cursor-pointer transition-all duration-300"></div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="mt-10 flex">
+            <div class="w-7/12">
+                <div class="flex items-center justify-between">
+                    <div class="">
+                        <div class="text-2xl font-medium">{{room.room_type}} hosted by {{room.host.first_name}}</div>
+                        <div class="flex items-center">
+                            <div class="flex mr-1">
+                                <div>{{room.guests}} guest{{room.guests|pluralize}}</div>
+                            </div>
+                            <div class="flex mr-1">
+                                <div class="mr-1">·</div>
+                                <div>{{room.bedrooms}} bedroom{{room.bedrooms|pluralize}}</div>
+                            </div>
+                            <div class="flex mr-1">
+                                <div class="mr-1">·</div>
+                                <div>{{room.beds}} bed{{room.beds|pluralize}}</div>
+                            </div>
+                            <div class="flex">
+                                <div class="mr-1">·</div>
+                                <div>{{room.baths}} bath{{room.baths|pluralize}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex">
+                        <a href="{{room.host.get_absolute_url}}">
+                            <div>{% include 'mixins/user_avatar.html' with user=room.host amount=14 %}</div>
+                        </a>
+                        <div class="-ml-5 mt-8">
+                            {% if room.host.superhost %}
+                            <i class="fas fa-crown fa-lg text-yellow-500"></i>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                <div class="border-section"></div>
+                <p class="mt-5">
+                    {{room.description}}
+                </p>
+                <div class="border-section"></div>
+                <div>
+                    <div class="text-2xl font-medium mt-5">What this place offers </div>
+                    <div class="text-xl font-medium mt-5">Amenities</div>
+                    <div class="grid grid-cols-2 mt-2">
+                        {% for amenity in room.amenities.all %}
+                        <div class="mb-1">{{amenity.name}}</div class="mb-10">
+                        {% endfor %}
+                    </div>
+                    <div class="text-xl font-medium mt-5">Facilities</div>
+                    <div class="grid grid-cols-2 mt-2">
+                        {% for facility in room.facilities.all %}
+                        <div class="mb-1">{{facility.name}}</div class="mb-10">
+                        {% endfor %}
+                    </div>
+                    <div class="text-xl font-medium mt-5">House Rule</div>
+                    <div class="grid grid-cols-2 mt-2">
+                        {% for house_rule in room.house_rules.all %}
+                        <div class="mb-1">{{house_rule.name}}</div class="mb-10">
+                        {% endfor %}
+                    </div>
+                </div>
+                
+                
+            </div>
+            <div class="w-5/12 px-8">
+            {% comment %} 
+            {% if room.host == user %}
+                <a href="{% url 'rooms:edit' room.pk %}" class="btn-link bg-green-400 block text-center">Edit room</a>
+                <a href="{% url 'rooms:delete' room.pk %}" class="btn-link block text-center mt-5">Delete room</a>
+            {% else %}
+                {% if not request.session.is_hosting %}
+                    {% for calender in room.get_calenders %}
+                        <div class="mb-20 px-20">
+                            <div class="text-center mb-5 font-medium">
+                                {{calender.get_month}} / {{calender.year}}
+                            </div>
+                            <div class="grid grid-cols-7 gap-2 text-center">
+                            {% for day in calender.day_names %}
+                                <div class="font-medium">{{day}}</div>
+                            {% endfor %}
+                            {% for day in calender.get_days %}
+                                {% is_booked room day as is_booked_bool %}
+                                {% if day.number != 0 %}
+                                    {% if day.past %}
+                                        <div class="bg-gray-200 rounded text-gray-300 p-1 w-full cursor-not-allowed">{{day}}</div>
+                                    {% elif is_booked_bool %}
+                                        <div class="bg-gray-200 rounded text-gray-400 p-1 w-full cursor-not-allowed line-through">{{day}}</div>
+                                    {% else %}
+                                        <a href="{% url 'reservations:create' room.pk day.year day.month day.number %}" class="bg-gray-200 rounded text-gray-600 p-1 w-full hover:bg-red-400 hover:text-white hover:font-medium cursor-pointer">
+                                            {{day}}
+                                        </a>
+                                    {% endif %}
+                                {% else %}
+                                    <div></div>
+                                {% endif %}
+                            {% endfor %}
+                            </div>
+                        </div>
+                        
+                    {% endfor %}
+                {% endif %}
+            {% endif %} 
+            {% endcomment %}
+                
+            </div>
+        </div>
+        <div class="border-section"></div>
+        <div class="text-xl font-medium mt-5">Reviews</div>
+        <div class="flex items-center text-xl mt-3">
+            <i class="fas fa-star text-red-500 text-base mr-2"></i> 
+            <div class="font-medium text-black mr-1 ">{{room.total_rating}}</div>
+            <div class="mx-2">·</div>
+            <div class="font-medium">{{room.reviews.count}} review{{room.reviews.count|pluralize}}</div>
+        </div>
+        <div class="grid grid-cols-2 mt-2">
+            <div class="grid grid-cols-2 pr-24 mt-2"> 
+                <div>Acurrancy </div>
+                <div class="flex w-full items-center justify-end">
+                    <div class=" md:w-24 lg:w-48 h-1 bg-gray-300 rounded-full mr-5 relative">
+                        <div class="h-1 bg-black rounded-full" style="width:{{room.acurrancy_percent}}%"></div>
+                    </div>
+                    <div>{{room.total_acurrancy}}</div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 pr-24 mt-2"> 
+                <div>Communication </div> 
+                <div class="flex w-full items-center justify-end">
+                    <div class=" md:w-24 lg:w-48 h-1 bg-gray-300 rounded-full mr-5 relative">
+                        <div class="h-1 bg-black rounded-full" style="width:{{room.communication_percent}}%"></div>
+                    </div>
+                    <div>{{room.total_communication}}</div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 pr-24 mt-2"> 
+                <div>Cleanliness </div> 
+                <div class="flex w-full items-center justify-end">
+                    <div class=" md:w-24 lg:w-48 h-1 bg-gray-300 rounded-full mr-5 relative">
+                        <div class="h-1 bg-black rounded-full" style="width:{{room.cleanliness_percent}}%"></div>
+                    </div>
+                    <div>{{room.total_cleanliness}}</div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 pr-24 mt-2"> 
+                <div>Location </div> 
+                <div class="flex w-full items-center justify-end">
+                    <div class=" md:w-24 lg:w-48 h-1 bg-gray-300 rounded-full mr-5 relative">
+                        <div class="h-1 bg-black rounded-full" style="width:{{room.location_percent}}%"></div>
+                    </div>
+                    <div>{{room.total_location}}</div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 pr-24 mt-2"> 
+                <div>Check In </div> 
+                <div class="flex w-full items-center justify-end">
+                    <div class=" md:w-24 lg:w-48 h-1 bg-gray-300 rounded-full mr-5 relative">
+                        <div class="h-1 bg-black rounded-full" style="width:{{room.check_in_percent}}%"></div>
+                    </div>
+                    <div>{{room.total_check_in}}</div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 pr-24 mt-2"> 
+                <div>Value </div> 
+                <div class="flex w-full items-center justify-end">
+                    <div class=" md:w-24 lg:w-48 h-1 bg-gray-300 rounded-full mr-5 relative">
+                        <div class="h-1 bg-black rounded-full" style="width:{{room.value_percent}}%"></div>
+                    </div>
+                    <div>{{room.total_value}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-5 mt-10">
+            {% for review in room.reviews.all %}
+                <div class="">
+                    <div class="flex items-center">
+                        <div class="mr-5">{% include 'mixins/user_avatar.html' with user=review.user amount=14 %}</div>
+                        <div>
+                            <div class="font-medium">{{review.user.first_name}}</div>
+                            <div>{{review.created|date:"F Y"}}</div>
+                        </div>
+                    </div>
+                    <div class="mt-5 pr-24">{{review.review}}</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock content %}

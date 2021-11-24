@@ -1,0 +1,52 @@
+{% load i18n %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block page_title %}{% endblock page_title %} | Maxbnb</title>
+  </head>
+  <body class="text-gray-800 font-light mt-20">
+
+    {% include 'partials/messages.html' %}
+    
+    <header class="container max-w-full inset-0 grid grid-cols-6 lg:grid-cols-3 items-center justify-between px-10 lg:px-20 h-20 shadow-md fixed bg-white">
+      <div class="items-center md:flex">
+        <a class="flex items-center" href="{% url 'core:home' %}">
+          <img class="w-8" src="{% static 'image/maxbnb_logo.png' %}">
+          <div class="ml-2 text-xl text-red-500 font-medium"><span class="hidden lg:block">maxbnb</span></div>
+        </a>
+      </div>
+      <div class="w-full flex justify-center items-center mx-auto col-span-3 lg:col-span-1">
+        {% block search_bar %}
+          <form method="GET" action="{% url 'rooms:search' %}" class="w-80">
+              <input 
+              class="search-box" 
+              placeholder='{% trans "Search by City" %}'
+              type="text" name="city" />
+          </form>
+        {% endblock search_bar %}
+      </div>
+      <div class="h-full col-span-2 lg:col-span-1 w-full">
+        {% include "partials/nav.html" %}
+      </div>
+    </header>
+    
+    {% block content %}
+    {% endblock  %}
+
+    {% include "partials/footer.html" %}
+    {% comment %} <script>
+      const langSelect = document.getElementById("js-lang")
+      const handleLangChange = () => {
+        const selected = langSelect.value
+        fetch(`{% url 'users:switch-language' %}?lang=${selected}`).then(()=>window.location.reload())
+      }
+      langSelect.addEventListener("change", handleLangChange)
+    </script> {% endcomment %}
+  </body>
+</html>

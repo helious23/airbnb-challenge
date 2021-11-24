@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django_countries.fields import CountryField
 from core import models as core_models
@@ -216,3 +217,17 @@ class Room(core_models.TimeStampedModel):
             return round(all_ratings / len(all_reviews), 2)
         except ZeroDivisionError:
             return 0
+
+    def first_photo(self):
+        try:
+            (photo,) = self.photos.all()[:1]
+            return photo.file.url
+        except ValueError:
+            return None
+
+    def get_next_four_photos(self):
+        photos = self.photos.all()[1:5]
+        return photos
+
+    def get_absolute_url(self):
+        return reverse("rooms:detail", kwargs={"pk": self.pk})
