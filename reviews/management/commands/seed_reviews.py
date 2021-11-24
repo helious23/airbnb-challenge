@@ -1,5 +1,6 @@
 import random
 from django.core.management.base import BaseCommand
+from django.utils.translation import ngettext
 from django_seed import Seed
 from reviews import models as review_models
 from users import models as user_models
@@ -26,15 +27,23 @@ class Command(BaseCommand):
             review_models.Review,
             number,
             {
-                "acurrancy": lambda x: random.randint(0, 5),
-                "communication": lambda x: random.randint(0, 5),
-                "cleanliness": lambda x: random.randint(0, 5),
-                "location": lambda x: random.randint(0, 5),
-                "check_in": lambda x: random.randint(0, 5),
-                "value": lambda x: random.randint(0, 5),
+                "acurrancy": lambda x: random.randint(3, 5),
+                "communication": lambda x: random.randint(3, 5),
+                "cleanliness": lambda x: random.randint(3, 5),
+                "location": lambda x: random.randint(3, 5),
+                "check_in": lambda x: random.randint(3, 5),
+                "value": lambda x: random.randint(3, 5),
                 "room": lambda x: random.choice(rooms),
                 "user": lambda x: random.choice(users),
             },
         )
         seeder.execute()
-        self.stdout.write(self.style.SUCCESS(f"{number} reviews Created"))
+        self.stdout.write(
+            self.style.SUCCESS(
+                ngettext(
+                    f"✅ {number} review was successfully created",
+                    f"✅ {number} reviews were successfully created",
+                    number,
+                )
+            )
+        )

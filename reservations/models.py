@@ -36,7 +36,7 @@ class Reservation(core_models.TimeStampedModel):
 
     def is_finished(self):
         now = timezone.now().date()
-        is_finished = now > self.check_out
+        is_finished = now >= self.check_out
         # if is_finished:
         #     BookedDay.objects.filter(reservation=self).delete()
         return is_finished

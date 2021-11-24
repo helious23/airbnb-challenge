@@ -75,6 +75,6 @@ class Command(BaseCommand):
             for house_rule in house_rules:
                 magic_number = random.randint(0, 15)
                 if magic_number % 2 == 0:
-                    room.house_rule.add(house_rule)
+                    room.house_rules.add(house_rule)
 
         self.stdout.write(self.style.SUCCESS(f"{number}  rooms Created"))

@@ -1,6 +1,7 @@
 import random
 from django.core.management.base import BaseCommand
 from django.contrib.admin.utils import flatten
+from django.utils.translation import ngettext
 from django_seed import Seed
 from lists import models as list_models
 from users import models as user_models
@@ -33,10 +34,18 @@ class Command(BaseCommand):
                 "user": lambda x: random.choice(users),
             },
         )
-        created_rooms = seeder.execute()
-        created_clean = flatten(list(created_rooms.values()))
+        created_list = seeder.execute()
+        created_clean = flatten(list(created_list.values()))
         for pk in created_clean:
             list_model = list_models.List.objects.get(pk=pk)
             to_add = rooms[random.randint(0, 5) : random.randint(6, 30)]  # noqa:E203
             list_model.rooms.add(*to_add)
-        self.stdout.write(self.style.SUCCESS(f"{number} {NAME} Created"))
+        self.stdout.write(
+            self.style.SUCCESS(
+                ngettext(
+                    f"✅ {number} list was successfully created",
+                    f"✅ {number} lists were successfully created",
+                    number,
+                )
+            )
+        )

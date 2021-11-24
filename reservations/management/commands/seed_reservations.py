@@ -2,6 +2,7 @@ import random
 from datetime import datetime, timedelta
 from django.core.management.base import BaseCommand
 from django.contrib.admin.utils import flatten
+from django.utils.translation import ngettext
 from django_seed import Seed
 from reservations import models as reservation_models
 from users import models as user_models
@@ -49,4 +50,12 @@ class Command(BaseCommand):
             reservation.check_out = check_out
             reservation.save()
 
-        self.stdout.write(self.style.SUCCESS(f"{number} {NAME} Created"))
+        self.stdout.write(
+            self.style.SUCCESS(
+                ngettext(
+                    f"✅ {number} reservation was successfully created",
+                    f"✅ {number} reservations were successfully created",
+                    number,
+                )
+            )
+        )
