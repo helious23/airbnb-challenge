@@ -1,7 +1,7 @@
 {% load i18n %}
 <ul class="flex items-center justify-end text-sm font-medium w-full h-full">
-    {% comment %}
      {% if user.is_authenticated %}
+    {% comment %} 
         <li class="nav_link">
             <a href="{% url 'users:switch-hosting' %}">
                 {% if request.session.is_hosting %}
@@ -28,23 +28,23 @@
                 <div>{% trans "Profile" %}</div>
             </a>
         </li>
+         {% endcomment %}
         <li class="nav_link">
             <a href="{% url 'users:logout' %}">
                 <div>{% trans "Log out" %}</div>
             </a>
         </li>
     {% else %} 
-    {% endcomment %}
         <li class="nav_link">
-            <a href="#">
+            <a href="{% url 'users:login' %}">
                 <div>{% trans "Log in" %}</div>
             </a>
         </li>
         <li class="nav_link">
-            <a href="#">
+            <a href="{% url 'users:signup' %}">
             <div>{% trans "Sign Up" %}</div>
             </a>
         </li>
-    
+    {% endif %}
     
 </ul>

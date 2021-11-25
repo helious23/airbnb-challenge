@@ -19,6 +19,7 @@
                 </div>
             </form>
         </div>
+        {% if rooms_count > 1 %}
         <div class="">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-5">
                 {% for room in rooms %}
@@ -38,6 +39,9 @@
                 {% endif %}
             </h5>
         </div>
+        {% else %}
+            <div>No results</div>
+        {% endif %}
     </div>
 
 {% endblock content %}

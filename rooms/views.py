@@ -84,7 +84,6 @@ class SearchView(View):
                 # for facility in facilities:
                 #     filter_args["facilities"] = facility
 
-                print(filter_args)
                 qs = models.Room.objects.filter(**filter_args).order_by("-created")
                 # paginator 사용 시 queryset 의 order 기준이 필요함
 
@@ -97,7 +96,11 @@ class SearchView(View):
                 return render(
                     request,
                     "rooms/search.html",
-                    {"form": form, "rooms": rooms},
+                    {
+                        "form": form,
+                        "rooms": rooms,
+                        "rooms_count": rooms.object_list.count(),
+                    },
                 )
         else:
             form = forms.SearchForm()
