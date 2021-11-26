@@ -1,5 +1,11 @@
+import uuid
+from django.utils.translation import gettext_lazy as _
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.template.loader import render_to_string
+from django.core.mail import send_mail
+from django.utils.html import strip_tags
 
 
 class User(AbstractUser):
@@ -26,6 +32,17 @@ class User(AbstractUser):
     CURRENCY_KRW = "krw"
     CURRENCY_CHOICES = ((CURRENCY_USD, "$ USD"), (CURRENCY_KRW, "₩ 원"))
 
+    LOGIN_EMAIL = "email"
+    LOGIN_GITHUB = "github"
+    LOGIN_KAKAO = "kakao"
+    LOGIN_NAVER = "naver"
+    LOGIN_CHOICES = (
+        (LOGIN_EMAIL, "E-mail"),
+        (LOGIN_GITHUB, "Github"),
+        (LOGIN_KAKAO, "Kakao"),
+        (LOGIN_NAVER, "Naver"),
+    )
+
     def user_directory_path(self, filename):
         return "user_{0}/avatar/{1}".format(self.id, filename)
 
@@ -46,3 +63,27 @@ class User(AbstractUser):
         default=CURRENCY_KRW,
     )
     superhost = models.BooleanField(default=False)
+    email_verified = models.BooleanField(default=False)
+    email_secret = models.CharField(max_length=20, default="", blank=True)
+    login_method = models.CharField(
+        choices=LOGIN_CHOICES, max_length=12, default=LOGIN_EMAIL
+    )
+
+    def verify_email(self):
+        if self.email_verified is False:
+            secret = uuid.uuid4().hex[:20]
+            self.email_secret = secret
+            html_message = render_to_string(
+                "emails/verify_email.html", {"secret": secret}
+            )
+            send_mail(
+                _("Verify Maxbnb Account"),
+                strip_tags(html_message),
+                settings.EMAIL_FROM,
+                # [self.email], # e-mail 수신자
+                ["max16@naver.com"],
+                fail_silently=False,
+                html_message=html_message,
+            )
+            self.save()
+        return

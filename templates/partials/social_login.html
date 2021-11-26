@@ -1,9 +1,15 @@
 <div class="flex flex-col w-full">
-    <a href="#" class="btn text-center border-gray-500 text-gray-700 mb-2 hover:bg-gray-700 hover:text-white">
+    <a href="{% url 'users:github-login' %}" class="btn text-center border-gray-500 text-gray-700 mb-2 hover:bg-gray-700 hover:text-white">
         <i class="fab fa-github fa-lg mr-2"></i> Continue with Github
     </a>
-    <a href="#" class="btn text-center border-yellow-400 hover:border-transparent text-yellow-400 mb-2 bg-white hover:bg-yellow-400 hover:text-white">
+    <a href="{% url 'users:kakao-login' %}" class="btn text-center border-yellow-400 hover:border-transparent text-yellow-400 mb-2 bg-white hover:bg-yellow-400 hover:text-white">
         <i class="fas fa-comment fa-lg mr-2"></i> Continue with Kakao
+    </a>
+    <a href="{% url 'users:naver-login' %}" class="btn text-center border-green-600 hover:border-transparent text-green-600 mb-2 bg-white hover:bg-green-600 hover:text-white">
+        <div class="flex justify-center items-center">
+            <div class="text-xl font-extrabold mr-3">N</div>
+            <div>Continue with Naver</div>
+        </div>
     </a>
 </div>
 
