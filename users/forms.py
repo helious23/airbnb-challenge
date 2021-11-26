@@ -73,3 +73,29 @@ class SignUpForm(forms.Form):
         user.first_name = first_name
         user.last_name = last_name
         user.save()
+
+
+class UpdateProfileForm(forms.ModelForm):
+    class Meta:
+        model = models.User
+        fields = (
+            "email",
+            "first_name",
+            "last_name",
+            "gender",
+            "bio",
+            "avatar",
+            "birthdate",
+            "language",
+            "currency",
+        )
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        try:
+            user = models.User.objects.get(email=email)
+            if user == self.instance:
+                return email
+            raise forms.ValidationError("E-mail already exists")
+        except models.User.DoesNotExist:
+            return email

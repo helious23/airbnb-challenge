@@ -21,9 +21,22 @@
 }
 
 input,
-textarea,
-select {
+textarea {
   @apply w-full border rounded p-3 font-light transition-all border-gray-300 text-left focus:outline-none focus:border-green-600;
+}
+
+.input {
+  div {
+    a {
+      color: #ef4444;
+    }
+    #avatar-clear_id {
+      display: none;
+    }
+    label[for="avatar-clear_id"] {
+      display: none;
+    }
+  }
 }
 
 textarea {
@@ -32,7 +45,7 @@ textarea {
 }
 
 select {
-  height: 80px;
+  @apply w-full border rounded font-light transition-all border-gray-300 text-center focus:outline-none focus:border-green-600 h-8;
 }
 
 form {
@@ -49,19 +62,19 @@ form {
 @keyframes messageFadeIn {
   0% {
     opacity: 0;
-    transform: translateY(-30px);
+    transform: translateY(-50px);
   }
   5% {
     opacity: 1;
-    transform: translateY(30px);
+    transform: translateY(50px);
   }
   95% {
     opacity: 1;
-    transform: translateY(30px);
+    transform: translateY(50px);
   }
   100% {
     opacity: 0;
-    transform: translateY(-30px);
+    transform: translateY(-50px);
   }
 }
 

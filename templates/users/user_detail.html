@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block page_title %}
+    {{user_obj.first_name}}'s Profile
+{% endblock page_title %}
+
+{% block content %}
+    <div class="h-full">
+        <div class="container md:w-6/12 lg:w-5/12 xl:w-1/4 mx-auto mt-40 mb-24 flex flex-col items-center border p-6 border-gray-300">
+            {% include 'mixins/user_avatar.html' with user=user_obj amount=20 %}
+            {% if user_obj.superhost %}
+                    <div class="border border-gray-00 p-1 rounded uppercase text-xs mt-3">superhost</div>
+            {% endif %}
+            <div class="text-3xl mt-5 flex items-center justify-center">
+                <div>{{user_obj.first_name}}</div>
+            </div>
+            <div class="mt-5 text-lg text-center">{{user_obj.bio}}</div>
+            
+            {% if user == user_obj %}
+                <a class="btn-link text-center mt-5" href="{% url 'users:update' %}">Edit Profile</a>
+            {% endif %}
+        </div>
+
+        {% if user_obj.rooms.count > 0 %}
+            <div class="container mx-auto flex flex-col items-center">
+                <h3 class="text-2xl">{{user_obj.first_name}}'s Rooms</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-20">
+                {% for room in user_obj.rooms.all %}
+                    {% include 'mixins/room_card.html' with room=room %}
+                {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+{% endblock content %}

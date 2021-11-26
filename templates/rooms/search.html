@@ -10,16 +10,19 @@
 {% block content %}
 
     <div class="container mx-auto flex mt-40 mb-24 ">
-        
         <div class="border p-6 border-gray-300 mr-20 w-3/12">
             <form method="GET" action="{% url 'rooms:search' %}" >
-                <button class="btn-link mb-10">Search</button>
+                <div class="flex items-center justify-center col-span-2">
+                    <button class="mt-5 border py-3 rounded-lg font-light transition-all text-white bg-red-400 w-6/12 h-12 mb-10">Search</button>    
+                </div>
                 <div class="w-full">
-                    {{form}}
+                    {% for field in form %}
+                        {% include 'mixins/search_form_input.html'  with field=field %}
+                    {% endfor %}
                 </div>
             </form>
         </div>
-        {% if rooms_count > 1 %}
+        {% if rooms_count >= 1 %}
         <div class="">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-5">
                 {% for room in rooms %}

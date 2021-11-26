@@ -1,12 +1,15 @@
 import os
-import requests
 import uuid
+import requests
+from django.contrib.auth.views import PasswordChangeView
+from django.views.generic.edit import UpdateView
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from django.urls import reverse, reverse_lazy
 from django.contrib import messages
-from django.views.generic import FormView
+from django.views.generic import FormView, DetailView
 from django.core.files.base import ContentFile
+from django.contrib.messages.views import SuccessMessageMixin
 from . import forms, models
 
 
@@ -27,10 +30,16 @@ from . import forms, models
 #         return render(request, "users/login.html", {"form": form})
 
 
-class LoginView(FormView):
+class LoginView(SuccessMessageMixin, FormView):
     template_name = "users/login.html"
     form_class = forms.LoginForm
     success_url = reverse_lazy("core:home")
+    success_message = "Welcome %(first_name)s"
+
+    def get_success_message(self, cleaned_data):
+        return self.success_message % dict(
+            cleaned_data, first_name=self.request.user.first_name
+        )
 
     def form_valid(self, form):
         email = form.cleaned_data.get("email")
@@ -188,7 +197,7 @@ def kakao_callback(request):
             profile_json = profile_request.json()
             email = profile_json.get("kakao_account").get("email", None)
             if email is None:
-                raise KakaoException("There is no E-mail on kakao profile")
+                raise KakaoException("Please agree with giving your email to us")
             profile = profile_json.get("kakao_account").get("profile", None)
             if profile is None:
                 raise KakaoException("Kakao profile does not exist")
@@ -292,3 +301,55 @@ def naver_callback(request):
     except NaverException as error:
         messages.error(request, error)
         return redirect(reverse("users:login"))
+
+
+class UserProfileView(DetailView):
+
+    model = models.User
+    context_object_name = "user_obj"
+
+
+class UpdateProfileView(UpdateView):
+
+    model = models.User
+    template_name = "users/update-profile.html"
+    form_class = forms.UpdateProfileForm
+
+    def get_object(self):
+        return self.request.user
+
+    def form_valid(self, form):
+        email = form.cleaned_data.get("email")
+        if email != self.request.user.get_username():
+            self.object.username = email
+            self.object.email_verified = False
+            self.object.save()
+            self.object.verify_email()
+            messages.success(self.request, "Email updated. Please verify updated email")
+        else:
+            messages.success(self.request, "Profile updated")
+        return super().form_valid(form)
+
+
+class ChangePasswordView(
+    # mixins.LoggedInOnlyView,
+    # mixins.EmailLoginOnlyView,
+    SuccessMessageMixin,
+    PasswordChangeView,
+):
+
+    template_name = "users/change-password.html"
+
+    success_message = "Password Updated"
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class=form_class)
+        form.fields["old_password"].widget.attrs = {"placeholder": "Current Password"}
+        form.fields["new_password1"].widget.attrs = {"placeholder": "New Password"}
+        form.fields["new_password2"].widget.attrs = {
+            "placeholder": "Confirm New Password"
+        }
+        return form
+
+    def get_success_url(self):
+        return self.request.user.get_absolute_url()
