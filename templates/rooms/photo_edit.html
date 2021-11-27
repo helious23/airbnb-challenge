@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block page_title %}Update Photo{% endblock page_title %}
+
+{% block search_bar %}{% endblock search_bar %}
+
+{% block content %}
+    <div class="container md:w-6/12 lg:w-5/12 xl:w-2/5 mx-auto mt-40 mb-24 flex flex-col items-center border p-6 border-gray-300">
+        {% include 'mixins/room/room_form.html' with form=form cta="Update Photo" %}
+    </div>
+{% endblock content %}

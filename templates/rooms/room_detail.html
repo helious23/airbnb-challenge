@@ -110,10 +110,11 @@
                 
             </div>
             <div class="w-5/12 px-8">
-            {% comment %} 
             {% if room.host == user %}
-                <a href="{% url 'rooms:edit' room.pk %}" class="btn-link bg-green-400 block text-center">Edit room</a>
+                <a href="{% url 'rooms:edit' room.pk %}" class="py-3 rounded-lg text-white bg-green-500 block text-center">Edit room</a>
                 <a href="{% url 'rooms:delete' room.pk %}" class="btn-link block text-center mt-5">Delete room</a>
+            {% endif %}
+            {% comment %} 
             {% else %}
                 {% if not request.session.is_hosting %}
                     {% for calender in room.get_calenders %}
@@ -153,6 +154,7 @@
         </div>
         <div class="border-section"></div>
         <div class="text-xl font-medium mt-5">Reviews</div>
+        {% if room.reviews.count > 0 %}
         <div class="flex items-center text-xl mt-3">
             <i class="fas fa-star text-red-500 text-base mr-2"></i> 
             <div class="font-medium text-black mr-1 ">{{room.total_rating}}</div>
@@ -164,7 +166,7 @@
                 <div>Acurrancy </div>
                 <div class="flex w-full items-center justify-end">
                     <div class=" md:w-24 lg:w-48 h-1 bg-gray-300 rounded-full mr-5 relative">
-                        <div class="h-1 bg-black rounded-full" style="width:{{room.acurrancy_percent}}%"></div>
+                        <div class="h-1 bg-red-400 rounded-full" style="width:{{room.acurrancy_percent}}%"></div>
                     </div>
                     <div>{{room.total_acurrancy}}</div>
                 </div>
@@ -173,7 +175,7 @@
                 <div>Communication </div> 
                 <div class="flex w-full items-center justify-end">
                     <div class=" md:w-24 lg:w-48 h-1 bg-gray-300 rounded-full mr-5 relative">
-                        <div class="h-1 bg-black rounded-full" style="width:{{room.communication_percent}}%"></div>
+                        <div class="h-1 bg-red-400 rounded-full" style="width:{{room.communication_percent}}%"></div>
                     </div>
                     <div>{{room.total_communication}}</div>
                 </div>
@@ -182,7 +184,7 @@
                 <div>Cleanliness </div> 
                 <div class="flex w-full items-center justify-end">
                     <div class=" md:w-24 lg:w-48 h-1 bg-gray-300 rounded-full mr-5 relative">
-                        <div class="h-1 bg-black rounded-full" style="width:{{room.cleanliness_percent}}%"></div>
+                        <div class="h-1 bg-red-400 rounded-full" style="width:{{room.cleanliness_percent}}%"></div>
                     </div>
                     <div>{{room.total_cleanliness}}</div>
                 </div>
@@ -191,7 +193,7 @@
                 <div>Location </div> 
                 <div class="flex w-full items-center justify-end">
                     <div class=" md:w-24 lg:w-48 h-1 bg-gray-300 rounded-full mr-5 relative">
-                        <div class="h-1 bg-black rounded-full" style="width:{{room.location_percent}}%"></div>
+                        <div class="h-1 bg-red-400 rounded-full" style="width:{{room.location_percent}}%"></div>
                     </div>
                     <div>{{room.total_location}}</div>
                 </div>
@@ -200,7 +202,7 @@
                 <div>Check In </div> 
                 <div class="flex w-full items-center justify-end">
                     <div class=" md:w-24 lg:w-48 h-1 bg-gray-300 rounded-full mr-5 relative">
-                        <div class="h-1 bg-black rounded-full" style="width:{{room.check_in_percent}}%"></div>
+                        <div class="h-1 bg-red-400 rounded-full" style="width:{{room.check_in_percent}}%"></div>
                     </div>
                     <div>{{room.total_check_in}}</div>
                 </div>
@@ -209,7 +211,7 @@
                 <div>Value </div> 
                 <div class="flex w-full items-center justify-end">
                     <div class=" md:w-24 lg:w-48 h-1 bg-gray-300 rounded-full mr-5 relative">
-                        <div class="h-1 bg-black rounded-full" style="width:{{room.value_percent}}%"></div>
+                        <div class="h-1 bg-red-400 rounded-full" style="width:{{room.value_percent}}%"></div>
                     </div>
                     <div>{{room.total_value}}</div>
                 </div>
@@ -229,6 +231,9 @@
                 </div>
             {% endfor %}
         </div>
+        {% else %}
+        <div class="mt-5">No reviews yet</div>
+        {% endif %}
     </div>
 
 {% endblock content %}

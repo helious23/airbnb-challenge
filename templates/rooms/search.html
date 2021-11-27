@@ -22,7 +22,7 @@
                 </div>
             </form>
         </div>
-        {% if rooms_count >= 1 %}
+        {% if rooms.paginator.count >= 1 %}
         <div class="">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-5">
                 {% for room in rooms %}
@@ -32,13 +32,19 @@
 
             <h5>
                 {% if rooms.has_previous %}
-                    <a href="?page={{rooms.previous_page_number}}">Previous</a>
+                    <a href="{{ request.get_full_path }}&page={{rooms.previous_page_number}}">Previous</a>
                 {% endif %}
 
-                Page {{rooms.number}} of {{rooms.paginator.num_pages}}
+                {% for page in rooms.paginator.page_range %}
+                    <a 
+                    href="{{ request.get_full_path }}&page={{page}}" 
+                    class="{% if page == rooms.number %}text-red-500{% endif %}">
+                        {{page}}
+                    </a>
+                {% endfor %}
 
                 {% if rooms.has_next %}
-                    <a href="?page={{rooms.next_page_number}}">Next</a>
+                    <a href="{{ request.get_full_path }}&page={{rooms.next_page_number}}">Next</a>
                 {% endif %}
             </h5>
         </div>

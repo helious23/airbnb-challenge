@@ -1,7 +1,6 @@
 {% load i18n %}
 <ul class="flex items-center justify-end text-sm font-medium w-full h-full">
      {% if user.is_authenticated %}
-        {% comment %} 
         <li class="nav_link">
             <a href="{% url 'users:switch-hosting' %}">
                 {% if request.session.is_hosting %}
@@ -18,6 +17,7 @@
                 </a>
             </li>
         {% endif %}
+        {% comment %} 
         <li class="nav_link">
             <a href="{% url 'lists:see-favs' %}">
                 <div>{% trans "Favs" %}({{user.list.rooms.count}})</div>
