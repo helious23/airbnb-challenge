@@ -59,3 +59,26 @@ class ReservatoinAdmin(admin.ModelAdmin):
         "guest",
         "room",
     )
+
+    search_fields = (
+        "room__name",
+        "room__host__username",
+    )
+
+    fieldsets = (
+        (
+            "Reservation Info",
+            {
+                "fields": ("status", "check_in", "check_out", "guest"),
+            },
+        ),
+        ("Room Info", {"fields": ("room",)}),
+    )
+
+
+@admin.register(models.BookedDay)
+class BookedDayAdmin(admin.ModelAdmin):
+
+    """Booked Day Admin Definition"""
+
+    list_display = ("day", "reservation")

@@ -1,8 +1,11 @@
+from dateutil import relativedelta
 from django.db import models
+from django.utils import timezone
 from django.urls import reverse
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django_countries.fields import CountryField
 from core import models as core_models
+from cal import Calendar
 
 
 class AbstractItem(core_models.TimeStampedModel):
@@ -231,3 +234,10 @@ class Room(core_models.TimeStampedModel):
 
     def get_absolute_url(self):
         return reverse("rooms:detail", kwargs={"pk": self.pk})
+
+    def get_calenders(self):
+        now = timezone.now()
+        next_month = now + relativedelta.relativedelta(months=1)
+        this_month = Calendar(now.year, now.month)
+        next_month = Calendar(next_month.year, next_month.month)
+        return [this_month, next_month]

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% load review_check %}
+
+{% block page_title %}
+    Reservation {{reservation.check_in}}
+{% endblock page_title %}
+
+{% block search-bar %}
+{% endblock search-bar %}
+
+{% block content %}
+    <div class="container  max-w-6xl h-full mx-auto mb-20 mt-28 flex flex-col">
+        <div class="border-t border-l border-r bg-cover bg-center h-56 rounded-t-lg" style="background-image: url({{reservation.room.first_photo}});"></div>
+        <div class="flex flex-col items-start border-l border-r border-t border-b">
+            <div class="font-medium border-b py-8 px-5 w-full">
+                {{reservation.check_in}} - {{reservation.check_out}}
+                <span class="ml-3 {% if reservation.status == 'pending' %} text-yellow-500 {% elif reservation.status == 'canceled' %} text-red-500 {% else %} text-green-600 {% endif %}">
+                    {{reservation.get_status_display}}
+                </span>
+            </div>
+    
+            <span class="text-2xl border-b p-5 mt-2 w-full">
+                {{reservation.room.name}}
+            </span>
+    
+            <div class="flex p-5 border-b w-full">
+                <div class="flex flex-col items-center">
+                    {% if reservation.room.host == user %}
+                    {% include "mixins/user_avatar.html" with user=reservation.guest amount=12 %}
+                    <span class="mt-2 text-gray-500">{{reservation.guest.first_name}}</span>
+                    {% else %}
+                    {% include "mixins/user_avatar.html" with user=reservation.room.host amount=12 %}
+                    <span class="mt-2 text-gray-500">{{reservation.room.host.first_name}}</span>
+                    {% endif %}
+                </div>
+                <div class="ml-5 flex flex-col justify-center">
+                    {% if reservation.room.host == user %}
+                    <span class="font-medium mb-px">Contact your Guest</span>
+                    {% else %}
+                    <span class="font-medium mb-px">Contact your Host</span>
+                    {% endif %}
+                    <a href="#" class="w-full py-2 rounded-lg font-light bg-blue-500 text-white flex items-center justify-center mt-2">
+                        <div>Send a Message</div>
+                    </a>
+                </div>
+            </div>
+            <div class="py-10 px-5 flex w-full">
+            {% if reservation.status != 'canceled' %}
+                {% if reservation.status == 'confirmed' and reservation.is_finished %}
+                    {% review_check user reservation as review %}
+                    {% if review %}
+                    <div class="">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="mr-5">{% include 'mixins/user_avatar.html' with user=review.user amount=14 %}</div>
+                                <div>
+                                    <div class="font-medium">{{review.user.first_name}}</div>
+                                    <div>{{review.created|date:"F Y"}}</div>
+                                </div>
+                            </div>
+                            {% if review.user == user %}
+                            <a href="{% url 'reviews:delete' reservation.room.pk review.pk %}" class="text-gray-400 hover:text-gray-700">
+                                <i class="far fa-trash-alt"></i>
+                            </a>
+                            {% endif %}
+                        </div>
+                        <div class="mt-5 pr-24">{{review.review}}</div>
+                    </div>
+
+                    {% else %}
+                    <div class="">
+                        <div class="font-medium text-lg text-center w-full mb-5">Write your Review</div>
+                        <form action="{% url 'reviews:create' reservation.room.pk %}" method="POST" class="w-1/2 mx-auto">
+                            {% csrf_token %}
+                            {{form}}
+                            <button class="w-full py-3 rounded-lg font-light bg-green-600 mt-10 text-white">Submit Review</button>
+                        </form>
+                    </div>
+                    {% endif %}
+                {% else %}
+                    {% if reservation.status == 'pending' %}
+                        <div class="mr-5">
+                            <a href="{% url 'reservations:edit' reservation.pk "cancel" %}" class="w-full py-3 rounded-lg font-light bg-red-500 block text-white px-3">Cancel Reservation</a>
+                        </div>
+                        {% if reservation.room.host == user %}
+                            <div>
+                                <a href="{% url 'reservations:edit' reservation.pk "confirm" %}" class="w-full py-3 rounded-lg font-light bg-green-600 text-white block px-3">Confirm Reservation</a>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

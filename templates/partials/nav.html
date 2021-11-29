@@ -17,6 +17,11 @@
                 </a>
             </li>
         {% endif %}
+        <li class="nav_link">
+            <a href="{% url 'reservations:list' user.pk %}">
+                <div>{% trans "My Reservation" %}</div>
+            </a>
+        </li>
         {% comment %} 
         <li class="nav_link">
             <a href="{% url 'lists:see-favs' %}">

@@ -1,0 +1,40 @@
+{% extends 'base.html' %} 
+{% load i18n %}
+{% load static %}
+
+{% block page_title %}
+    Reservation List 
+{% endblock page_title %} 
+
+{% block content %} 
+
+
+<div class="container mx-auto">
+
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-28">
+        {% for reservation in reservations %}
+            <div class="mb-10 px-2">
+                <a href="{% url 'reservations:detail' reservation.pk%}">
+                    <div class="h-96 md:h-80 lg:h-60 xl:h-60 bg-cover bg-center rounded-2xl" style="background-image: url('{{reservation.room.first_photo}}')"></div>
+                    <div class="flex justify-between mt-3 mb-2">
+                        <div class="flex w-10/12">
+                            {% if reservation.room.host.superhost %}
+                                <div class="uppercase font-medium text-xs px-2 py-0.5 border border-gray-700 rounded mr-2">superhost</div>
+                            {% endif %}
+                            <div class="text-sm text-gray-600 truncate">{{reservation.room.city}}, {{reservation.room.country.name}}</div>
+
+                        </div>
+                        <div class="text-sm flex items-center justify-center">
+                        <i class="fas fa-star text-red-500 text-xs mr-1"></i> {{reservation.room.total_rating}}
+                        </div>
+                    </div>
+                    <div class="text-black truncate">{{reservation.room.name}}</div>
+                </a>
+            </div>
+        {% endfor %} 
+    </div>
+    
+    
+</div>
+{% endblock content %}
