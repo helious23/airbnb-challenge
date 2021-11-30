@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-7)ugfo#w_2=@%wuulyjnnk36pnil^9^ww+n^=q5wf%!)@qcqgt"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(os.environ.get("DEBUG"))
 
 ALLOWED_HOSTS = ["airbnb-challenge.eba-3m7n3idm.ap-northeast-2.elasticbeanstalk.com"]
 
