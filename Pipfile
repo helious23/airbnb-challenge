@@ -13,10 +13,11 @@ django-dotenv = "*"
 requests = "*"
 psycopg = "*"
 sentry-sdk = "*"
+django-storages = "*"
+boto3 = "*"
 
 [dev-packages]
 flake8 = "*"
-awsebcli = "*"
 black = "*"
 
 [requires]
