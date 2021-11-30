@@ -39,15 +39,16 @@
                     {% else %}
                     <span class="font-medium mb-px">Contact your Host</span>
                     {% endif %}
-                    <a href="#" class="w-full py-2 rounded-lg font-light bg-blue-500 text-white flex items-center justify-center mt-2">
+                    <a href="{% url 'conversations:go' reservation.room.host.pk reservation.guest.pk %}" class="w-full py-2 rounded-lg font-light bg-blue-500 text-white flex items-center justify-center mt-2">
                         <div>Send a Message</div>
                     </a>
+                    
                 </div>
             </div>
             <div class="py-10 px-5 flex w-full">
             {% if reservation.status != 'canceled' %}
                 {% if reservation.status == 'confirmed' and reservation.is_finished %}
-                    {% review_check user reservation as review %}
+                    {% review_check reservation as review %}
                     {% if review %}
                     <div class="">
                         <div class="flex items-center justify-between">

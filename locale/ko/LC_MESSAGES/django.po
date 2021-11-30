@@ -1,0 +1,193 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-11-29 17:28+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: lists/management/commands/seed_lists.py:46
+#, python-brace-format
+msgid "✅ {number} list was successfully created"
+msgid_plural "✅ {number} lists were successfully created"
+msgstr[0] ""
+msgstr[1] ""
+
+#: reservations/management/commands/seed_reservations.py:56
+#, python-brace-format
+msgid "✅ {number} reservation was successfully created"
+msgid_plural "✅ {number} reservations were successfully created"
+msgstr[0] ""
+msgstr[1] ""
+
+#: reservations/views.py:29
+msgid "Login required"
+msgstr ""
+
+#: reviews/management/commands/seed_reviews.py:44
+#, python-brace-format
+msgid "✅ {number} review was successfully created"
+msgid_plural "✅ {number} reviews were successfully created"
+msgstr[0] ""
+msgstr[1] ""
+
+#: rooms/admin.py:51
+#, python-format
+msgid "%d room was successfully marked as instant booking."
+msgid_plural "%d rooms were successfully marked as instant booking."
+msgstr[0] ""
+msgstr[1] ""
+
+#: templates/base.html:29
+msgid "Search by City"
+msgstr "도시를 검색하세요"
+
+#: templates/lists/list_detail.html:11
+msgid "Your Favourites"
+msgstr "즐겨찾기"
+
+#: templates/lists/list_detail.html:14
+msgid "There are no rooms you choose."
+msgstr "좋아요 표시한 방이 아직 없습니다"
+
+#: templates/partials/footer.html:4
+msgid "Welcome to the new world"
+msgstr "새로운 세상으로 여러분을 초대합니다"
+
+#: templates/partials/footer.html:5
+msgid "All rights reserved"
+msgstr "모든 저작권은 Maxbnb에 있습니다"
+
+#: templates/partials/nav.html:7
+msgid "Stop Hosting"
+msgstr "호스팅 멈추기"
+
+#: templates/partials/nav.html:9
+msgid "Start Hosting"
+msgstr "호스팅 시작하기"
+
+#: templates/partials/nav.html:16
+msgid "Create Room"
+msgstr "등록하기"
+
+#: templates/partials/nav.html:22
+msgid "My Reservation"
+msgstr "나의 예약"
+
+#: templates/partials/nav.html:27
+msgid "Favs"
+msgstr "좋아요"
+
+#: templates/partials/nav.html:32
+msgid "Profile"
+msgstr "프로필"
+
+#: templates/partials/nav.html:37
+msgid "Log out"
+msgstr "로그아웃"
+
+#: templates/partials/nav.html:43
+msgid "Log in"
+msgstr "로그인"
+
+#: templates/partials/nav.html:48
+msgid "Sign Up"
+msgstr "회원 가입"
+
+#: templates/rooms/main_picture.html:5 templates/rooms/main_picture.html:15
+#: templates/rooms/main_picture.html:25
+msgid "Not sure any to go? Perfect"
+msgstr "어디로 떠날지 정해지지 않았나요? 완벽해요"
+
+#: templates/rooms/main_picture.html:8 templates/rooms/main_picture.html:18
+#: templates/rooms/main_picture.html:28
+msgid "I'm flexible"
+msgstr "아무 곳이나 떠나고 싶어요"
+
+#: templates/rooms/room_list.html:34
+#, python-format
+msgid "Page %(current_page)s of %(total_page)s"
+msgstr "%(total_page)s 페이지 중 %(current_page)s 번째"
+
+#: users/admin.py:118
+msgid "Mark selected users as Superhost"
+msgstr "선택한 사용자를 슈퍼호스트로 변경합니다."
+
+#: users/admin.py:124
+#, python-format
+msgid "%d user was successfully marked as Superhost."
+msgid_plural "%d users were successfully marked as Superhost."
+msgstr[0] "%d 사용자가 Superhost 로 바뀌었습니다"
+msgstr[1] "%d 사용자가 Superhost 로 바뀌었습니다"
+
+#: users/mixins.py:13
+msgid "Can't access"
+msgstr "접근할 수 없습니다"
+
+#: users/models.py:20
+msgid "Male"
+msgstr "남성"
+
+#: users/models.py:21
+msgid "Female"
+msgstr "여성"
+
+#: users/models.py:22
+msgid "Other"
+msgstr "기타"
+
+#: users/models.py:28
+msgid "English"
+msgstr "영어"
+
+#: users/models.py:29
+msgid "Korean"
+msgstr "한국어"
+
+#: users/models.py:50
+msgid "avatar"
+msgstr "프로필 사진"
+
+#: users/models.py:52
+msgid "gender"
+msgstr "성별"
+
+#: users/models.py:54
+msgid "bio"
+msgstr "자기소개"
+
+#: users/models.py:55
+msgid "birthdate"
+msgstr "생년월일"
+
+#: users/models.py:57
+msgid "language"
+msgstr "언어"
+
+#: users/models.py:64
+msgid "currency"
+msgstr "통화"
+
+#: users/models.py:70
+msgid "superhost"
+msgstr "슈퍼호스트"
+
+#: users/models.py:74
+msgid "login_method"
+msgstr "로그인 방법"
+
+#: users/models.py:85
+msgid "Verify Maxbnb Account"
+msgstr "Maxbnb 계정을 인증하세요"

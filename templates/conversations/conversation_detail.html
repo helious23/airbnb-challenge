@@ -1,0 +1,61 @@
+
+{% extends "base.html" %}
+
+{% block page_title %}
+    Conversation
+{% endblock page_title %}
+
+{% block search-bar %}
+{% endblock search-bar %}
+
+{% block content %}
+
+    <div class="container mx-auto my-10 mt-32 flex justify-between min-h-50vh">
+
+        <div class="border w-1/4 p-10">
+            <span class="text-center w-full block text-lg font-medium">Conversation paritipants</span>
+            <div class="flex justify-between mt-10 items-center">
+                {% for user in conversation.participants.all  %}
+                    <div class="flex flex-col items-center">
+                        {% include "mixins/user_avatar.html" with user=user amount=12%}
+                        <span class="mt-2 text-gray-500">{{user.first_name}}</span>
+                    </div>
+                    {% if forloop.first %}
+                      <span class="font-medium text-2xl w-24 text-center">&</span>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="flex-grow ">
+            <div class=" border ml-10 p-10">
+            {% for message in conversation.messages.all %}
+                <div class="mb-10 mt-10 flex w-full {% if message.user.pk == user.pk %}justify-start flex-row-reverse{% endif %}">
+                        <div class="text-sm font-medium text-gray-600">{{message.user.first_name}}</div>
+                        <div class="mt-3 p-5 w-max  rounded-b-2xl
+                            {% if message.user.pk != user.pk %}
+                                bg-green-500
+                                text-white
+                                rounded-tr-2xl
+                                ml-3
+                            {% else %}
+                                bg-gray-300
+                                rounded-tl-2xl
+                                mr-3
+                            {% endif %}">
+                            {{message.message}}
+                        </div>     
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="mt-10 ml-10 flex justify-center items-center">
+                <form method="POST" class="w-full flex items-center">
+                    {% csrf_token %}
+                    <input class="w-9/12" name="message" placeholder="Write a Message" required/>
+                    <div class="w-2/12 mx-auto">
+                        <button class="btn-link">Send Comment</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

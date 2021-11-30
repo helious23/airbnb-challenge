@@ -7,6 +7,7 @@ from django.template.loader import render_to_string
 from django.core.mail import send_mail
 from django.utils.html import strip_tags
 from django.urls import reverse
+from core import managers as core_managers
 
 
 class User(AbstractUser):
@@ -17,16 +18,16 @@ class User(AbstractUser):
     GENDER_FEMALE = "female"
     GENDER_OTHER = "other"
     GENDER_CHOICES = (
-        (GENDER_MALE, "Male"),
-        (GENDER_FEMALE, "Female"),
-        (GENDER_OTHER, "Other"),
+        (GENDER_MALE, _("Male")),
+        (GENDER_FEMALE, _("Female")),
+        (GENDER_OTHER, _("Other")),
     )
 
     LANGUAGE_ENGLISH = "en"
     LANGUAGE_KOREAN = "kr"
     LANGUAGE_CHOICES = (
-        (LANGUAGE_ENGLISH, "English"),
-        (LANGUAGE_KOREAN, "Korean"),
+        (LANGUAGE_ENGLISH, _("English")),
+        (LANGUAGE_KOREAN, _("Korean")),
     )
 
     CURRENCY_USD = "usd"
@@ -47,28 +48,34 @@ class User(AbstractUser):
     def user_directory_path(self, filename):
         return "user_{0}/avatar/{1}".format(self.id, filename)
 
-    avatar = models.ImageField(upload_to=user_directory_path, blank=True)
-    gender = models.CharField(choices=GENDER_CHOICES, max_length=40, blank=True)
-    bio = models.TextField(default="", blank=True)
-    birthdate = models.DateField(null=True, blank=True)
+    avatar = models.ImageField(_("avatar"), upload_to=user_directory_path, blank=True)
+    gender = models.CharField(
+        _("gender"), choices=GENDER_CHOICES, max_length=40, blank=True
+    )
+    bio = models.TextField(_("bio"), default="", blank=True)
+    birthdate = models.DateField(_("birthdate"), null=True, blank=True)
     language = models.CharField(
+        _("language"),
         choices=LANGUAGE_CHOICES,
         max_length=2,
         blank=True,
         default=LANGUAGE_KOREAN,
     )
     currency = models.CharField(
+        _("currency"),
         choices=CURRENCY_CHOICES,
         max_length=3,
         blank=True,
         default=CURRENCY_KRW,
     )
-    superhost = models.BooleanField(default=False)
+    superhost = models.BooleanField(_("superhost"), default=False)
     email_verified = models.BooleanField(default=False)
     email_secret = models.CharField(max_length=20, default="", blank=True)
     login_method = models.CharField(
-        choices=LOGIN_CHOICES, max_length=12, default=LOGIN_EMAIL
+        _("login_method"), choices=LOGIN_CHOICES, max_length=12, default=LOGIN_EMAIL
     )
+
+    objects = core_managers.CustomUserManager()
 
     def verify_email(self):
         if self.email_verified is False:

@@ -1,4 +1,5 @@
 import datetime
+from django.utils.translation import gettext_lazy as _
 from django.http import Http404
 from django.shortcuts import render
 from django.urls import reverse
@@ -24,13 +25,19 @@ def create(request, room, year, month, day):
         messages.error(request, "Can't resere that room")
         return redirect(reverse("core:home"))
     except models.BookedDay.DoesNotExist:
-        reservation = models.Reservation.objects.create(
-            check_in=date_obj,
-            check_out=date_obj + datetime.timedelta(days=1),
-            guest=request.user,
-            room=room,
-        )
-        return redirect(reverse("reservations:detail", kwargs={"pk": reservation.pk}))
+        if request.user.is_anonymous:
+            messages.info(request, _("Login required"))
+            return redirect(reverse("users:login"))
+        else:
+            reservation = models.Reservation.objects.create(
+                check_in=date_obj,
+                check_out=date_obj + datetime.timedelta(days=1),
+                guest=request.user,
+                room=room,
+            )
+            return redirect(
+                reverse("reservations:detail", kwargs={"pk": reservation.pk})
+            )
 
 
 class ReservationDetailView(View):

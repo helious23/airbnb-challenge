@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.utils.translation import ngettext
+from django.utils.translation import ngettext, gettext_lazy as _
 from django.contrib import messages
 from . import models
 from rooms import models as room_models
@@ -115,7 +115,7 @@ class CustomUserAdmin(UserAdmin):
 
     actions = ["make_superhost"]
 
-    @admin.action(description="Mark selected users as Superhost")
+    @admin.action(description=_("Mark selected users as Superhost"))
     def make_superhost(self, request, queryset):
         updated = queryset.update(superhost=True)
         self.message_user(

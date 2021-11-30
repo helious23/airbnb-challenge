@@ -1,5 +1,5 @@
 {% extends 'base.html' %} 
-{% load is_booked i18n %}
+{% load is_booked i18n on_favs %}
 
 
 {% block page_title %}
@@ -11,12 +11,14 @@
         <div class="flex items-center justify-between">
             <div class="text-2xl font-medium">{{room.name}}</div>
             <div class="w-12">
-                {% comment %} {% on_favs room as on_favs_boolean %}
-                {% if on_favs_boolean %}
-                <a href="{% url 'lists:toggle-room' room.pk %}?action=remove" class="text-2xl text-red-400"><i class="fas fa-heart"></i></a>    
-                {% else %}
-                <a href="{% url 'lists:toggle-room' room.pk %}?action=add" class="text-2xl text-red-400"><i class="far fa-heart"></i></a>    
-                {% endif %} {% endcomment %}
+                {% if not user.is_anonymous %}
+                    {% on_favs room as on_favs_boolean %}
+                    {% if on_favs_boolean %}
+                        <a href="{% url 'lists:toggle-room' room.pk %}?action=remove" class="text-2xl text-red-400"><i class="fas fa-heart"></i></a>    
+                    {% else %}
+                        <a href="{% url 'lists:toggle-room' room.pk %}?action=add" class="text-2xl text-red-400"><i class="far fa-heart"></i></a>    
+                    {% endif %}
+                {% endif %}
             </div>
         </div>
         <div class="flex items-center mt-2 text-sm text-gray-500">

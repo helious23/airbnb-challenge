@@ -22,13 +22,13 @@
                 <div>{% trans "My Reservation" %}</div>
             </a>
         </li>
-        {% comment %} 
         <li class="nav_link">
             <a href="{% url 'lists:see-favs' %}">
-                <div>{% trans "Favs" %}({{user.list.rooms.count}})</div>
+                <div>
+                    {% trans "Favs" %}{% if user.list.rooms.count > 0 %}({{user.list.rooms.count}}){% endif %}
+                </div>
             </a>
         </li>
-        {% endcomment %}
         <li class="nav_link">
             <a href="{{user.get_absolute_url}}">
                 <div>{% trans "Profile" %}</div>

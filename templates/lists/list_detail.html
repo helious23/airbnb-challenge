@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block page_title %}
+    {{user.first_name}}'s Favourites
+{% endblock page_title %}
+
+{% block content %}
+    <div class="h-full mt-40">
+        <div class="container mx-auto flex flex-col items-center">
+            <h3 class="text-2xl">{% trans "Your Favourites" %}</h3>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 mt-20">
+                {% if user.list.rooms.count == 0 %}
+                    <div class="">{% trans "There are no rooms you choose." %}</div>
+                {% else %}
+                    {% for room in user.list.rooms.all %}
+                        {% include 'mixins/room_card.html' with room=room %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}
