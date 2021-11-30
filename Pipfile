@@ -12,11 +12,12 @@ psycopg2-binary = "*"
 django-dotenv = "*"
 requests = "*"
 psycopg = "*"
+sentry-sdk = "*"
 
 [dev-packages]
 flake8 = "*"
-black = "*"
 awsebcli = "*"
+black = "*"
 
 [requires]
 python_version = "3.8"
