@@ -18,7 +18,7 @@ boto3 = "*"
 
 [dev-packages]
 flake8 = "*"
-awsebcli = "*"
+black = "*"
 
 [requires]
 python_version = "3.8"
