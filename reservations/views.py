@@ -64,7 +64,7 @@ def edit_reservation(request, pk, verb):
     ):
         raise Http404()
     if verb == "confirm":
-        reservation.status = models.Reservation.STATUS_CONFIRME
+        reservation.status = models.Reservation.STATUS_CONFIRMED
     elif verb == "cancel":
         reservation.status = models.Reservation.STATUS_CANCELED
         models.BookedDay.objects.filter(reservation=reservation).delete()
