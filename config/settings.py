@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get("DEBUG"))
 
-ALLOWED_HOSTS = ["airbnb-challenge.eba-3m7n3idm.ap-northeast-2.elasticbeanstalk.com"]
+ALLOWED_HOSTS = ["airbnb-challenge.eba-3m7n3idm.ap-northeast-2.elasticbeanstalk.com", "127.0.0.1"]
 
 
 # Application definition

@@ -99,7 +99,10 @@ def complate_verification(request, key):
 def github_login(request):
     base_url = "https://github.com/login/oauth/authorize?"
     client_id = os.environ.get("GH_ID")
-    redirect_uri = "http://127.0.0.1:8000/users/login/github/callback"
+    if bool(os.environ.get("DEBUG")):
+        redirect_uri = "http://127.0.0.1:8000/users/login/github/callback"
+    else:
+        redirect_uri = "http://airbnb-challenge.eba-3m7n3idm.ap-northeast-2.elasticbeanstalk.com/users/login/github/callback"
     return redirect(
         f"{base_url}client_id={client_id}&redirect_uri={redirect_uri}&scope=read:user&allow_signup=true"
     )
@@ -174,7 +177,10 @@ def github_callback(request):
 def kakao_login(request):
     base_url = "https://kauth.kakao.com/oauth/authorize?"
     client_id = os.environ.get("KAKAO_ID")
-    redirect_uri = "http://127.0.0.1:8000/users/login/kakao/callback"
+    if bool(os.environ.get("DEBUG")):
+        redirect_uri = "http://127.0.0.1:8000/users/login/kakao/callback"
+    else:
+        redirect_uri = "http://airbnb-challenge.eba-3m7n3idm.ap-northeast-2.elasticbeanstalk.com/users/login/kakao/callback"
     return redirect(
         f"{base_url}client_id={client_id}&redirect_uri={redirect_uri}&response_type=code"
     )
@@ -189,7 +195,10 @@ def kakao_callback(request):
         base_url = "https://kauth.kakao.com/oauth/token?"
         code = request.GET.get("code", None)
         client_id = os.environ.get("KAKAO_ID")
-        redirect_uri = "http://127.0.0.1:8000/users/login/kakao/callback"
+        if bool(os.environ.get("DEBUG")):
+            redirect_uri = "http://127.0.0.1:8000/users/login/kakao/callback"
+        else:
+            redirect_uri = "http://airbnb-challenge.eba-3m7n3idm.ap-northeast-2.elasticbeanstalk.com/users/login/kakao/callback"
         if code is not None:
             token_request = requests.post(
                 f"{base_url}grant_type=authorization_code&client_id={client_id}&code={code}&redirect_uri={redirect_uri}"
@@ -244,7 +253,10 @@ def kakao_callback(request):
 def naver_login(request):
     base_url = "https://nid.naver.com/oauth2.0/authorize?"
     client_id = os.environ.get("NAVER_ID")
-    redirect_uri = "http://127.0.0.1:8000/users/login/naver/callback"
+    if bool(os.environ.get("DEBUG")):
+        redirect_uri = "http://127.0.0.1:8000/users/login/naver/callback"
+    else:
+        redirect_uri = "http://airbnb-challenge.eba-3m7n3idm.ap-northeast-2.elasticbeanstalk.com/users/login/naver/callback"
     state = uuid.uuid4().hex[:10]
     return redirect(
         f"{base_url}client_id={client_id}&redirect_uri={redirect_uri}&response_type=code&state={state}"
