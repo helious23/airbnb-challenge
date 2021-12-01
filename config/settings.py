@@ -188,8 +188,8 @@ if not DEBUG:
 
     DEFAULT_FILE_STORAGE = "config.custom_storage.UploadStorage"
     STATICFILES_STORAGE = "config.custom_storage.StaticStorage"
-    AWS_ACCESS_KEY_ID = os.environ.get("AWSACCESSKEYID")
-    AWS_SECRET_ACCESS_KEY = os.environ.get("AWSSECRETACCESSKEY")
+    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
     AWS_STORAGE_BUCKET_NAME = "airbnb-challenge-max16"
     AWS_DEFAULT_ACL = "public-read"
 
