@@ -15,7 +15,7 @@ def go_conversation(request, host_pk, guest_pk):
                 participants=host_user
             ).filter(participants=guest_user)
             print(conversation)
-        except (models.Conversation.DoesNotExist or ValueError):
+        except ValueError:
             conversation = models.Conversation.objects.create()
             conversation.participants.add(host_user, guest_user)
         return redirect(reverse("conversations:detail", kwargs={"pk": conversation.pk}))
